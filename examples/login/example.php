@@ -32,7 +32,11 @@ $query = static fn (string $name): string => is_string($_GET[$name] ?? null) ? $
 
 $provider = TwinfieldConnect::forClient(Example::client(), Example::REDIRECT_URI);
 
-$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$session = static fn (string $name): string => is_string($_SESSION[$name] ?? null) ? $_SESSION[$name] : '';
+
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+
+$path = parse_url(is_string($requestUri) ? $requestUri : '/', PHP_URL_PATH);
 
 // 1. Send the user to Twinfield, via Twinfield Connect.
 if ($path === '/') {
@@ -59,8 +63,8 @@ if ($query('error') !== '') {
     $fail('Login failed (' . $query('error') . '): ' . ($query('error_description') ?: 'no description'));
 }
 
-$state = $_SESSION['twinfield_state'] ?? '';
-$pkceCode = $_SESSION['twinfield_pkce'] ?? '';
+$state = $session('twinfield_state');
+$pkceCode = $session('twinfield_pkce');
 unset($_SESSION['twinfield_state'], $_SESSION['twinfield_pkce']);
 
 if ($state === '' || !hash_equals($state, $query('state'))) {
