@@ -86,7 +86,7 @@ final class TwinfieldConnectTest extends TestCase
     public function testValidatesAccessTokensAtTwinfield(): void
     {
         $provider = $this->provider(self::json([
-            'exp' => 1794165191,
+            'exp' => '1794165191',
             'scope' => ['openid', 'twf.organisationUser', 'twf.organisation'],
             'twf.organisationUserCode' => 'JDOE',
             'twf.organisationId' => '0b6a5f6e-1111-2222-3333-444455556666',
