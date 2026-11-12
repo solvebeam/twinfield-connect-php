@@ -6,6 +6,7 @@ namespace SolveBeam\Twinfield\Connect;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 use JsonException;
@@ -38,6 +39,7 @@ final readonly class Registration
      *
      * @throws RegistrationException When Twinfield Connect refuses the registration.
      * @throws UnexpectedResponseException When the response has no client ID and secret.
+     * @throws GuzzleException When Twinfield Connect cannot be reached.
      */
     public function register(string $name, array $redirectUris): ConnectClient
     {

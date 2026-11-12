@@ -49,7 +49,7 @@ echo $client->clientId, PHP_EOL;
 echo $client->clientSecret, PHP_EOL;
 ```
 
-A redirect URI is an `https` URL, or `http` on `localhost` for development. `register()` throws a `RegistrationException` when Twinfield Connect refuses the registration.
+A redirect URI is an `https` URL, or `http` on `localhost` for development. `register()` throws a `RegistrationException` when Twinfield Connect refuses the registration, and a Guzzle exception when Twinfield Connect cannot be reached.
 
 ### 2. Log in
 
