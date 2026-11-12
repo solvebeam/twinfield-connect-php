@@ -42,6 +42,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "SolveBeam\\Twinfield\\Connect\\Examples\\": "examples/",
       "SolveBeam\\Twinfield\\Connect\\Tests\\": "tests/"
     }
   },

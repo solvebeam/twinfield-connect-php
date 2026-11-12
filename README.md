@@ -134,6 +134,14 @@ use SolveBeam\Twinfield\Authentication\RefreshTokenAccessTokenProvider;
 $tokens = new RefreshTokenAccessTokenProvider($provider, $refreshToken);
 ```
 
+## Examples
+
+See [examples/](examples/) for small examples you can run. They need no setup:
+
+```sh
+php examples/login/example.php
+```
+
 ## Your own Twinfield Connect
 
 To use a Twinfield Connect you run yourself, or one on your machine during development, pass its URL:

@@ -3,6 +3,7 @@
 /.github            export-ignore
 /.gitignore         export-ignore
 /CHANGELOG.md       export-ignore
+/examples           export-ignore
 /phpcs.xml.dist     export-ignore
 /phpstan.neon.dist  export-ignore
 /phpunit.xml.dist   export-ignore
