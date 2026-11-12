@@ -76,11 +76,45 @@ final class RegistrationTest extends TestCase
         $registration->register('My application', ['https://example.com/callback']);
     }
 
+    public function testThrowsWhenAnErrorResponseHasNoErrorCode(): void
+    {
+        $registration = $this->registration(new Response(500, [], '{"message": "Internal error"}'));
+
+        $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('Twinfield Connect answered HTTP 500 without an error code.');
+
+        $registration->register('My application', ['https://example.com/callback']);
+    }
+
     public function testRefusesARegistrationWithoutRedirectUris(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->registration()->register('My application', []);
+    }
+
+    public function testRefusesARegistrationWithoutAName(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->registration()->register('', ['https://example.com/callback']);
+    }
+
+    public function testRegistersAtAnotherTwinfieldConnect(): void
+    {
+        $this->mock = new MockHandler([
+            new Response(201, [], '{"client_id": "connect-client", "client_secret": "connect-secret"}'),
+        ]);
+
+        $registration = new Registration(
+            new Client(['handler' => HandlerStack::create($this->mock)]),
+            'http://localhost:8787/',
+        );
+
+        $registration->register('My application', ['http://localhost/callback']);
+        $request = $this->mock->getLastRequest() ?? self::fail('No request was sent.');
+
+        self::assertSame('http://localhost:8787/register', (string) $request->getUri());
     }
 
     private function registration(Response ...$responses): Registration
