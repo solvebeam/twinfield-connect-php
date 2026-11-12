@@ -71,6 +71,7 @@ final class RegistrationTest extends TestCase
         $registration = $this->registration(new Response(502, [], '<html>Bad gateway</html>'));
 
         $this->expectException(UnexpectedResponseException::class);
+        $this->expectExceptionMessage('Twinfield Connect answered HTTP 502 without JSON.');
 
         $registration->register('My application', ['https://example.com/callback']);
     }

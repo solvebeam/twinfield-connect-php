@@ -53,17 +53,23 @@ final readonly class Registration
             RequestOptions::HTTP_ERRORS => false,
         ]);
 
+        $statusCode = $response->getStatusCode();
+
         try {
             $data = json_decode((string) $response->getBody(), true, 16, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw new UnexpectedResponseException('Twinfield Connect did not return JSON.', 0, $exception);
+            throw new UnexpectedResponseException(
+                sprintf('Twinfield Connect answered HTTP %d without JSON.', $statusCode),
+                0,
+                $exception,
+            );
         }
 
         if (!is_array($data)) {
-            throw new UnexpectedResponseException('Twinfield Connect did not return a JSON object.');
+            throw new UnexpectedResponseException(
+                sprintf('Twinfield Connect answered HTTP %d without a JSON object.', $statusCode),
+            );
         }
-
-        $statusCode = $response->getStatusCode();
 
         if ($statusCode >= 400) {
             $error = $data['error'] ?? null;
