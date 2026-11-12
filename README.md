@@ -68,6 +68,11 @@ $provider = TwinfieldConnect::forClient(
     'https://example.com/twinfield/callback',
 );
 
+if (isset($_GET['error'])) {
+    // The user refused, or the login failed. Do not send the user to Twinfield again.
+    exit('Login failed.');
+}
+
 if (!isset($_GET['code'])) {
     // Send the user to Twinfield, via Twinfield Connect.
     $url = $provider->getAuthorizationUrl([
